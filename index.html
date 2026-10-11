@@ -27,19 +27,6 @@
   --font-body: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0E181E;
-    --surface: #15252E;
-    --ink: #E7EEF1;
-    --muted: #9BAEB8;
-    --line: #25363F;
-    --accent: #63C7D8;
-    --on-accent: #0E181E;
-    --lcd-bg: #0A1319;
-    color-scheme: dark;
-  }
-}
 :root[data-theme="dark"] {
   --bg: #0E181E;
   --surface: #15252E;
@@ -346,12 +333,11 @@ footer { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
 (function () {
   var root = document.documentElement;
   var btn = document.getElementById('theme-toggle');
-  var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
   function isDark() {
     var t = root.getAttribute('data-theme');
     if (t === 'dark') return true;
     if (t === 'light') return false;
-    return !!(mq && mq.matches);
+    return false;
   }
   function label() { btn.textContent = isDark() ? 'Modo claro' : 'Modo escuro'; }
   try {
@@ -359,7 +345,6 @@ footer { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
     if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
   } catch (e) {}
   label();
-  if (mq && mq.addEventListener) mq.addEventListener('change', label);
   btn.addEventListener('click', function () {
     var next = isDark() ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
