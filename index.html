@@ -27,17 +27,6 @@
   --font-body: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
 }
-:root[data-theme="dark"] {
-  --bg: #0E181E;
-  --surface: #15252E;
-  --ink: #E7EEF1;
-  --muted: #9BAEB8;
-  --line: #25363F;
-  --accent: #63C7D8;
-  --on-accent: #0E181E;
-  --lcd-bg: #0A1319;
-  color-scheme: dark;
-}
 
 * { box-sizing: border-box; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
@@ -63,8 +52,6 @@ section { scroll-margin-top: 24px; min-width: 0; }
 .top nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
 .top nav a { color: var(--ink); text-decoration: none; padding-block: 4px; border-bottom: 1px solid transparent; }
 .top nav a:hover { border-bottom-color: var(--accent); }
-.theme { font: inherit; letter-spacing: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 3px 14px; cursor: pointer; }
-.theme:hover { border-color: var(--accent); }
 
 /* hero */
 .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; padding-top: 24px; align-items: center; }
@@ -186,7 +173,6 @@ footer { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
       <a href="#competencias">Competências</a>
       <a href="#trajetoria">Trajetória</a>
       <a href="#contato">Contato</a>
-      <button class="theme" id="theme-toggle" type="button">Modo escuro</button>
     </nav>
   </header>
 
@@ -329,30 +315,6 @@ footer { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
   <footer>© 2026 Lucas Carvalho</footer>
 </div>
 
-<script>
-(function () {
-  var root = document.documentElement;
-  var btn = document.getElementById('theme-toggle');
-  function isDark() {
-    var t = root.getAttribute('data-theme');
-    if (t === 'dark') return true;
-    if (t === 'light') return false;
-    return false;
-  }
-  function label() { btn.textContent = isDark() ? 'Modo claro' : 'Modo escuro'; }
-  try {
-    var saved = localStorage.getItem('theme');
-    if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
-  } catch (e) {}
-  label();
-  btn.addEventListener('click', function () {
-    var next = isDark() ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    label();
-  });
-})();
-</script>
 
 </body>
 </html>
