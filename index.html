@@ -29,7 +29,7 @@
 }
 
 .lang { display: inline-flex; gap: 4px; }
-.lang button { font: inherit; font-size: 1.15rem; line-height: 1; background: transparent; border: 1px solid transparent; border-radius: 999px; padding: 3px 7px; cursor: pointer; }
+.lang button { font: inherit; letter-spacing: 0.04em; text-transform: lowercase; color: var(--ink); line-height: 1; background: transparent; border: 1px solid transparent; border-radius: 999px; padding: 4px 10px; cursor: pointer; }
 .lang button:hover { border-color: var(--accent); }
 .lang button[aria-pressed="true"] { border-color: var(--ink); }
 
@@ -180,9 +180,9 @@ footer { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
       <a href="#contato">Contato</a>
     </nav>
     <div class="lang" role="group" aria-label="Idioma / Language">
-      <button type="button" data-lang="pt" aria-pressed="true" aria-label="Português" title="Português">🇧🇷</button>
-      <button type="button" data-lang="en" aria-pressed="false" aria-label="English" title="English">🇺🇸</button>
-      <button type="button" data-lang="es" aria-pressed="false" aria-label="Español" title="Español">🇪🇸</button>
+      <button type="button" data-lang="pt" aria-pressed="true" aria-label="Português" title="Português">pt</button>
+      <button type="button" data-lang="en" aria-pressed="false" aria-label="English" title="English">en</button>
+      <button type="button" data-lang="es" aria-pressed="false" aria-label="Español" title="Español">es</button>
     </div>
   </header>
 
