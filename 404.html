@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lucas Carvalho · Erro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&family=Instrument+Sans:wght@400;600&family=JetBrains+Mono&display=swap">
+<style>
+:root { color-scheme: light; --bg:#EEF1F2; --ink:#15222C; --muted:#53636E; --line:#D2D9DD; --accent:#0B6E7F; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: var(--bg); color: var(--ink); font: 16px/1.6 'Instrument Sans', 'Segoe UI', system-ui, sans-serif; }
+main { width: 100%; max-width: 560px; }
+.top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: .8rem; letter-spacing: .04em; }
+.top .name { text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.lang { display: inline-flex; gap: 4px; }
+.lang button { font: inherit; text-transform: lowercase; color: var(--ink); line-height: 1; background: transparent; border: 1px solid transparent; border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+.lang button:hover { border-color: var(--accent); }
+.lang button[aria-pressed="true"] { border-color: var(--ink); }
+.code { margin: 0; font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-weight: 700; font-size: clamp(5rem, 24vw, 9rem); line-height: 1; letter-spacing: -.03em; color: var(--accent); }
+h1 { margin: 8px 0 12px; font-family: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif; font-size: clamp(1.6rem, 6vw, 2.2rem); line-height: 1.15; }
+p { margin: 0 0 28px; color: var(--muted); }
+.btn { display: inline-block; font-weight: 600; text-decoration: none; padding: 11px 22px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; }
+.btn:hover { filter: brightness(1.08); }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <span class="name">Lucas Carvalho</span>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="pt" aria-pressed="true">pt</button>
+      <button type="button" data-lang="en" aria-pressed="false">en</button>
+      <button type="button" data-lang="es" aria-pressed="false">es</button>
+    </div>
+  </div>
+  <p class="code" id="code">404</p>
+  <h1 id="title"></h1>
+  <p id="text"></p>
+  <a class="btn" id="home" href="/"></a>
+</main>
+<script>
+(function () {
+  // Uso: 404.html (padrão) ou 404.html?code=400|401|403|404|500
+  var M = {
+    400: { pt: ['Requisição inválida', 'O servidor não entendeu o pedido. Confira o endereço e tente de novo.'],
+           en: ['Bad request', 'The server could not understand the request. Check the address and try again.'],
+           es: ['Solicitud incorrecta', 'El servidor no entendió la solicitud. Revisa la dirección e inténtalo de nuevo.'] },
+    401: { pt: ['Autorização necessária', 'Esta página exige autenticação para ser acessada.'],
+           en: ['Authorization required', 'This page requires authentication to be accessed.'],
+           es: ['Autorización requerida', 'Esta página requiere autenticación para acceder.'] },
+    403: { pt: ['Acesso negado', 'Você não tem permissão para ver esta página.'],
+           en: ['Forbidden', 'You do not have permission to view this page.'],
+           es: ['Acceso prohibido', 'No tienes permiso para ver esta página.'] },
+    404: { pt: ['Página não encontrada', 'O endereço que você abriu não existe ou foi movido.'],
+           en: ['Page not found', 'The address you opened does not exist or has been moved.'],
+           es: ['Página no encontrada', 'La dirección que abriste no existe o fue movida.'] },
+    500: { pt: ['Erro interno do servidor', 'Algo deu errado do nosso lado. Tente novamente em instantes.'],
+           en: ['Internal server error', 'Something went wrong on our side. Please try again shortly.'],
+           es: ['Error interno del servidor', 'Algo salió mal de nuestro lado. Inténtalo de nuevo en unos instantes.'] }
+  };
+  var HOME = { pt: 'Voltar ao início', en: 'Back to home', es: 'Volver al inicio' };
+  var m = /[?&]code=(\d{3})/.exec(location.search);
+  var code = m && M[m[1]] ? m[1] : '404';
+  var lang = 'pt';
+  try { var s = localStorage.getItem('lang'); if (s === 'en' || s === 'es') lang = s; } catch (e) {}
+  // Página de projeto no GitHub Pages: a raiz do site é /<repositório>/
+  var base = '/';
+  if (/\.github\.io$/.test(location.hostname)) {
+    var seg = location.pathname.split('/')[1];
+    if (seg) base = '/' + seg + '/';
+  }
+  document.getElementById('home').href = base;
+  document.getElementById('code').textContent = code;
+  function render() {
+    document.getElementById('title').textContent = M[code][lang][0];
+    document.getElementById('text').textContent = M[code][lang][1];
+    document.getElementById('home').textContent = HOME[lang];
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+    document.title = code + ' · ' + M[code][lang][0];
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      lang = b.getAttribute('data-lang');
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
